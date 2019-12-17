@@ -12,14 +12,20 @@ import json
 Spotify = spotipy.Spotify
 
 ## spotify account details
+## you can save those in your .bash_profile file and access it from there..
+
+## this way
 # os.environ['SPOTIPY_CLIENT_ID'] = 'your-spotify-client-id'
 # os.environ['SPOTIPY_CLIENT_SECRET'] = 'your-spotify-client-secret'
 # os.environ['SPOTIPY_REDIRECT_URI'] = 'your-app-redirect-url'
 
+## or this way. 
+token = os.environ['SPOTIPY_CLIENT_TOKEN']
 base_url = 'https://api.spotify.com'
 scope = 'playlist-read-private'
+
 # spotify:playlist:
-token = util.prompt_for_user_token('vmdqlsl05lswg2mhyy1c9bece',scope=scope)
+token = util.prompt_for_user_token( token,scope=scope)
 spotify_object = Spotify(auth=token)
 
 
@@ -182,8 +188,17 @@ for result in results:
 
 ## using the created dict above to get popularity and followers column. 
 for key,value in artist_dict.items():
-    artist_dict[key] = (value, spotify_object.artist(key)['popularity'], spotify_object.artist(key)['followers']['total'])
+    try:
+        artist_dict[key] = (value, spotify_object.artist(key)['popularity'], spotify_object.artist(key)['followers']['total'])
+    except:
+        artist_dict[key] = (value, 'NA', 'NA')
 
+```
+
+
+```python
+## getting rid of values that are NA. 
+artist_dict = {i: v for i, v in artist_dict.items() if v[1] != 'NA'}
 ```
 
 
@@ -246,8 +261,8 @@ Q('SELECT COUNT(*) FROM tracks')
   </thead>
   <tbody>
     <tr>
-      <td>0</td>
-      <td>67</td>
+      <th>0</th>
+      <td>54</td>
     </tr>
   </tbody>
 </table>
@@ -293,24 +308,24 @@ LIMIT 5
   </thead>
   <tbody>
     <tr>
-      <td>0</td>
-      <td>Behind Barz - Bonus</td>
+      <th>0</th>
+      <td>NorthStar - Remix</td>
     </tr>
     <tr>
-      <td>1</td>
-      <td>Money In The Grave (Drake ft. Rick Ross)</td>
+      <th>1</th>
+      <td>Follow God</td>
     </tr>
     <tr>
-      <td>2</td>
-      <td>Enemies (feat. DaBaby)</td>
+      <th>2</th>
+      <td>Futsal Shuffle 2020</td>
     </tr>
     <tr>
-      <td>3</td>
-      <td>On The Road (feat. Meek Mill &amp; Lil Baby)</td>
+      <th>3</th>
+      <td>HIGHEST IN THE ROOM</td>
     </tr>
     <tr>
-      <td>4</td>
-      <td>Saint-Tropez</td>
+      <th>4</th>
+      <td>Immortal</td>
     </tr>
   </tbody>
 </table>
@@ -358,34 +373,34 @@ LIMIT 5
   </thead>
   <tbody>
     <tr>
-      <td>0</td>
-      <td>Behind Barz - Bonus</td>
-      <td>Drake</td>
-      <td>40526845</td>
+      <th>0</th>
+      <td>NorthStar - Remix</td>
+      <td>XXXTENTACION</td>
+      <td>16760146</td>
     </tr>
     <tr>
-      <td>1</td>
-      <td>Money In The Grave (Drake ft. Rick Ross)</td>
-      <td>Drake</td>
-      <td>40526845</td>
+      <th>1</th>
+      <td>Follow God</td>
+      <td>Kanye West</td>
+      <td>10840912</td>
     </tr>
     <tr>
-      <td>2</td>
-      <td>Enemies (feat. DaBaby)</td>
-      <td>Post Malone</td>
-      <td>17542578</td>
+      <th>2</th>
+      <td>Futsal Shuffle 2020</td>
+      <td>Lil Uzi Vert</td>
+      <td>7382041</td>
     </tr>
     <tr>
-      <td>3</td>
-      <td>On The Road (feat. Meek Mill &amp; Lil Baby)</td>
-      <td>Post Malone</td>
-      <td>17542578</td>
+      <th>3</th>
+      <td>HIGHEST IN THE ROOM</td>
+      <td>Travis Scott</td>
+      <td>7329878</td>
     </tr>
     <tr>
-      <td>4</td>
-      <td>Saint-Tropez</td>
-      <td>Post Malone</td>
-      <td>17542578</td>
+      <th>4</th>
+      <td>Immortal</td>
+      <td>21 Savage</td>
+      <td>7107211</td>
     </tr>
   </tbody>
 </table>
@@ -427,9 +442,9 @@ Q("""SELECT name, MAX(duration_ms) FROM tracks
   </thead>
   <tbody>
     <tr>
-      <td>0</td>
-      <td>No Cap (feat. Rich The Kid)</td>
-      <td>260855</td>
+      <th>0</th>
+      <td>Hot (Remix) [feat. Gunna and Travis Scott]</td>
+      <td>279906</td>
     </tr>
   </tbody>
 </table>
@@ -487,44 +502,44 @@ df.head()
   </thead>
   <tbody>
     <tr>
-      <td>0</td>
-      <td>74</td>
-      <td>151040</td>
-      <td>Lil Nas X</td>
-      <td>88</td>
-      <td>1161728</td>
+      <th>0</th>
+      <td>84</td>
+      <td>198912</td>
+      <td>Lil Uzi Vert</td>
+      <td>90</td>
+      <td>7382041</td>
     </tr>
     <tr>
-      <td>1</td>
-      <td>72</td>
-      <td>163120</td>
-      <td>Drake</td>
+      <th>1</th>
+      <td>92</td>
+      <td>159714</td>
+      <td>DaBaby</td>
+      <td>94</td>
+      <td>1492998</td>
+    </tr>
+    <tr>
+      <th>2</th>
       <td>97</td>
-      <td>40526845</td>
+      <td>175720</td>
+      <td>Travis Scott</td>
+      <td>97</td>
+      <td>7329878</td>
     </tr>
     <tr>
-      <td>2</td>
-      <td>85</td>
-      <td>193026</td>
-      <td>Young Thug</td>
-      <td>93</td>
-      <td>4378724</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>85</td>
-      <td>142417</td>
-      <td>Quality Control</td>
+      <th>3</th>
       <td>82</td>
-      <td>399764</td>
+      <td>196652</td>
+      <td>Roddy Ricch</td>
+      <td>89</td>
+      <td>890667</td>
     </tr>
     <tr>
-      <td>4</td>
-      <td>83</td>
-      <td>176640</td>
-      <td>YNW Melly</td>
+      <th>4</th>
       <td>82</td>
-      <td>1429516</td>
+      <td>215380</td>
+      <td>Juice WRLD</td>
+      <td>98</td>
+      <td>6796358</td>
     </tr>
   </tbody>
 </table>
@@ -550,7 +565,7 @@ sns.pairplot(df);
 ```
 
 
-![png](spotify_api_files/spotify_api_26_0.png)
+![png](spotify_api_files/spotify_api_27_0.png)
 
 
 It looks like there are a couple of datapoint in the followers column, that are outliers. If we get rid off those couple of points we might be able to get a better look at the data. Let's find out those artist with top followers. 
@@ -590,68 +605,68 @@ df.sort_values(by = 'followers', ascending = False).head(8)
   </thead>
   <tbody>
     <tr>
-      <td>8</td>
-      <td>92</td>
-      <td>205426</td>
-      <td>Drake</td>
-      <td>97</td>
-      <td>40526845</td>
+      <th>44</th>
+      <td>75</td>
+      <td>166406</td>
+      <td>XXXTENTACION</td>
+      <td>95</td>
+      <td>16760146</td>
     </tr>
     <tr>
-      <td>1</td>
-      <td>72</td>
-      <td>163120</td>
-      <td>Drake</td>
-      <td>97</td>
-      <td>40526845</td>
+      <th>40</th>
+      <td>90</td>
+      <td>104591</td>
+      <td>Kanye West</td>
+      <td>95</td>
+      <td>10840912</td>
     </tr>
     <tr>
-      <td>15</td>
-      <td>87</td>
-      <td>218320</td>
-      <td>Post Malone</td>
-      <td>100</td>
-      <td>17542578</td>
-    </tr>
-    <tr>
-      <td>29</td>
-      <td>91</td>
-      <td>150866</td>
-      <td>Post Malone</td>
-      <td>100</td>
-      <td>17542578</td>
-    </tr>
-    <tr>
-      <td>5</td>
-      <td>89</td>
-      <td>196760</td>
-      <td>Post Malone</td>
-      <td>100</td>
-      <td>17542578</td>
-    </tr>
-    <tr>
-      <td>21</td>
-      <td>89</td>
-      <td>260640</td>
-      <td>Chris Brown</td>
-      <td>91</td>
-      <td>9451625</td>
-    </tr>
-    <tr>
-      <td>38</td>
-      <td>76</td>
-      <td>209120</td>
-      <td>Future</td>
-      <td>88</td>
-      <td>8019644</td>
-    </tr>
-    <tr>
-      <td>31</td>
-      <td>80</td>
-      <td>151066</td>
-      <td>Big Sean</td>
+      <th>0</th>
       <td>84</td>
-      <td>6539231</td>
+      <td>198912</td>
+      <td>Lil Uzi Vert</td>
+      <td>90</td>
+      <td>7382041</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>97</td>
+      <td>175720</td>
+      <td>Travis Scott</td>
+      <td>97</td>
+      <td>7329878</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>85</td>
+      <td>254723</td>
+      <td>21 Savage</td>
+      <td>89</td>
+      <td>7107211</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>82</td>
+      <td>215380</td>
+      <td>Juice WRLD</td>
+      <td>98</td>
+      <td>6796358</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>94</td>
+      <td>189322</td>
+      <td>Juice WRLD</td>
+      <td>98</td>
+      <td>6796358</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>89</td>
+      <td>279906</td>
+      <td>Young Thug</td>
+      <td>93</td>
+      <td>4638713</td>
     </tr>
   </tbody>
 </table>
@@ -669,7 +684,7 @@ sns.pairplot(df_followers);
 ```
 
 
-![png](spotify_api_files/spotify_api_30_0.png)
+![png](spotify_api_files/spotify_api_31_0.png)
 
 
 Well, If we look at the top right plot,we see that there are a cluster of datapoints where tracks_popularity is fairly high eventhough there isn't enough followers. However, the relationship between artist_popularity and tracks_popularity is quite significant as we have discussed earlier. May be if we have more data we can reveal something more significant.
@@ -704,4 +719,10 @@ getting_playlist_data_to_database(playlist_id, playlist_owner, sqlite_db,sql_tab
 
 # Resources used
 #### https://www.sqlitetutorial.net/sqlite-python/create-tables/ 
+#### https://spotipy.readthedocs.io/en/latest/
  
+
+
+```python
+
+```
